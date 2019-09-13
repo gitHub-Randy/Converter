@@ -1,0 +1,156 @@
+Streaming system using Nginx rtmp & ffmpeg
+Dit is de handleiding om het streaming systeem na te maken.
+
+Korte uitleg werking en belangrijke informatie:
+
+Het systeem is op dit moment nog niet live getest!
+
+Het systeem werk als volgt:
+
+Ubuntu met nginx + rtmp module  - Server
+Ffmpeg – converter & streaing software
+Vlc  - client
+
+Ubuntu runt op een virtual machine op dit moment waarbij er  port 1935(zowel udp als ook tcp) opengezet is.
+Vervolgens Wordt er m.b.v. ffmpeg alle content in het juiste video format gebracht(zelfde codecs)
+
+Als dit gedaan is met ffmpeg alle content streamen 
+
+Vlc kan dan gebruikt worden om de stream op te vragen
+
+
+
+
+Opzetten Ubuntu & nginx + rtmp
+1. Installeer Ubuntu
+2. Run via de command line:
+sudo apt update
+sudo apt upgrade
+3. Installer nginx:
+	sudo apt install nginx
+
+4. Installer ook de RTMP module van nginx
+sudo add-apt-repository universe
+sudo apt install libnginx-mod-rtmp
+
+5. Pas de configuratie file van nginx aan
+sudo nano /etc/nginx/nginx.conf
+
+6. Helemaal beneden van de file (onder mail als het goed is) vul je dit in en sla op:
+
+rtmp {
+        server {
+                listen 1935;
+                chunk_size 4096;
+
+                application live {
+                        live on;
+                        record off;
+                }
+        }
+}
+
+
+7. Herstart nginx daarmee de aanpassingen van de config toegepast worden
+sudo systemctl restart nginx
+
+Streaming software / converter installeren:
+De software die we hiervoor gebruiken heet FFMPEG. Dit is een tool wat vele verschillende functionaliteiten heeft, waaronder het converten en het outputten naar een streamserver.
+
+Voor de huidige streaming ethode werd ffmpeg 4.x gebruikt. Deze is in ieder geval voor het concat gedeelte bij het streamen nodig.
+
+Installeren ffmpeg:
+1. sudo add-apt-repository ppa:jonathonf/ffmpeg-4
+2. sudo apt-get update
+3. sudo apt-get install ffmpeg
+
+check achteraf nog een keer de versie om zeker te zijn dat de juiste installed is:
+$ ffmpeg -version
+
+ffmpeg version 4.0.3-1~18.04.york0 Copyright (c) 2000-2018 the FFmpeg developers
+built with gcc 7 (Ubuntu 7.3.0-27ubuntu1~18.04)
+
+good to know:
+basic commands:
+ffmpeg -version:            show version
+ffmpeg -formats:            show available formats
+ffmpeg -codecs:             show available codecs
+ffmpeg -decoders:           show available decoders
+ffmpeg -encoders:           show available encoders
+ffmpeg -bsfs:               show available bit stream filters
+ffmpeg -protocols:          show available protocols
+ffmpeg -filters:            show available filters
+ffmpeg -pix_fmts:           show available pixel formats
+ffmpeg -layouts:            show standard channel layouts
+ffmpeg -sample_fmts:        show available audio sample formats
+
+
+basic convert example:
+
+ffmpeg -i in.mov -vcodec copy -acodec aac -strict experimental -ab 128k out.mp4
+
+
+Video playlist voorbereidn(converting)
+Om content in een loop te streamen moet er voor gezorgd worden dat alle video files de zelfde codecs hebben. Hierdoor zal het mogelijk zijn om ffmpeg met de concat method te gebruiken. Dit is op dit moment de enigste optie(i.c.m ffmpeg) om content continu in een loop af te spelen en de content ook aan te passen.
+Voorbereiden van content:
+Videos in de zelfde codec encoden:
+ffmpeg -i inputVideo.mp4 -c:v libx264 outputVideo.mp4
+
+voor dit voorbeeld werd alleen de video encoded de audio werd nix mee gedaan.
+
+
+Video in een playlist zetten:
+
+Maak 2 tekst bestanden aan:
+root.txt & nested.txt
+
+Inhoud root.txt:
+file 'nested.txt'
+file 'nested.txt'
+
+inhoud nested.txt:
+ffconcat version 1.0
+file ‘outputVideo.mp4'
+file ‘outputVideo2.mp4'
+
+
+Streamen en  ontvangen
+In de terminal voer dit uit:
+
+sudo ffmpeg -re -f concat -safe 0 -stream_loop -1 -i ./root.txt 
+-fflags +genpts  -f flv  rtmp://127.0.0.1/live/test
+
+-re = de input zoals die is inlezen
+-f = een bepaald input of output format forceren. Ffmpeg detecteert het vaak alleen maar is met concat wel nodig
+
+Concat =  is een demuxer die uit een tekst file alle files naar elkaar leest alsof ze allemaal een file zijn.
+
+-stream_loop = zorgt ervoor dat de input zodra deze afgelopen is nog een keer afgespeeld wordt. -1 = infinite
+
+-i = input
+-fflag  zorgt ervoor dat geen onnodige melding getoond worden.
+
+Flv zet de output om in een flv container
+
+Rtmp://ip-adress/appName/key
+Ip address is de address van de server
+appName is de naam van de applicatie die in de nginx conf staat
+key is een speciaale key die de stream identificeert.
+
+
+Om de stream te ontvangen kun je vlc gebruiken
+Media->open netwerkstream
+In de url vul je dan het volgende in:
+Rtmp://ip-adress/appName/key
+
+Als het goed is gaat vlc dan je stream tonen.
+
+
+
+
+
+
+
+
+
+
