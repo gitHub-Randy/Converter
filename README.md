@@ -1,6 +1,5 @@
-# Converter
-File converter for content<br>
-Hoe zet ik een Live stream server en client op<br>
+
+# Hoe zet ik een Live stream server en client op<br>
 versie 2.0<br>
 Auteur: Rnady Anft<br>
 
