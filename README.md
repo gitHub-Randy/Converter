@@ -108,7 +108,7 @@ optionele parameters:<br>
 	is de server adress waar de content heen gestuurd moet worden. stream key kan willekeurig zijn maar moet wel onthouden worden zodat er bekend is hoe de video stream ontvangen kan worden.<br>
 
 # Client:
-	De client bestaat uit een html pagina met de libary hls.js als video player(node.js nodig:https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/).
+	De client bestaat uit een html pagina met de libary hls.js als video player(node.js nodig:https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/).<br>
 	Deze wordt html pagian wordt op de nginx server geplaatst om vanuit daar gehost te worden. de locatie waar deze geplaatst moet worden is:
 	/usr/local/nginx/html
 
@@ -124,13 +124,13 @@ FFMPEG moet wel streamen daarmee de strem op de html pagina afgespeeld kan worde
 
 gebruikte Resources onder andere:
 
-https://opensource.com/article/19/1/basic-live-video-streaming-server
-https://linuxize.com/post/how-to-install-ffmpeg-on-ubuntu-18-04/
-https://www.ffmpeg.org/ffmpeg-all.html
-https://dev.to/samuyi/how-to-setup-nginx-for-hls-video-streaming-on-centos-7-3jb8
-https://github.com/video-dev/hls.js/
-https://www.nginx.com/
-https://github.com/arut/nginx-rtmp-module
+https://opensource.com/article/19/1/basic-live-video-streaming-server	<br>
+https://linuxize.com/post/how-to-install-ffmpeg-on-ubuntu-18-04/	<br>
+https://www.ffmpeg.org/ffmpeg-all.html	<br>
+https://dev.to/samuyi/how-to-setup-nginx-for-hls-video-streaming-on-centos-7-3jb8 <br>
+https://github.com/video-dev/hls.js/ <br>
+https://www.nginx.com/ <br>
+https://github.com/arut/nginx-rtmp-module <br>
 
 
 
