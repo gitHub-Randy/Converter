@@ -1,0 +1,58 @@
+	#user  nobody;
+	worker_processes  1;
+
+	error_log  logs/rtmp_error.log debug;
+	pid        logs/nginx.pid;
+
+	events {
+    	   worker_connections  1024;
+	}
+
+	# the server where the clinet will get the content(hls video stream served)
+	http {
+	    server {
+        	listen       80;
+        	server_name  /;
+
+	        location /hls {
+       	        # Serve HLS fragments
+		#CORS is needed for the client browser. They only can accept the stream if it has the following setup
+                # CORS setup
+            	add_header 'Access-Control-Allow-Origin' '*' always;
+	        add_header 'Access-Control-Expose-Headers' 'Content-Length';
+
+	        # allow CORS preflight requests
+        	if ($request_method = 'OPTIONS') {
+                    add_header 'Access-Control-Allow-Origin' '*';
+                    add_header 'Access-Control-Max-Age' 1728000;
+                    add_header 'Content-Type' 'text/plain charset=UTF-8';
+                    add_header 'Content-Length' 0;
+                    return 204;
+                 }
+
+
+            	types {
+                   application/vnd.apple.mpegurl m3u8;
+                   video/mp2t ts;
+            	}
+            	root /tmp;
+            	add_header Cache-Control no-cache;
+        	}
+    	     }
+	}
+	#The server where you will send the content to with FFMPEG. This module will recieve the content and converts it to HLS and puts the files temporarily on the server.
+	rtmp {
+            server {
+                listen 1935; #port where the content can be sent to
+                chunk_size 512; #cpu usage. the higher this number, the slower the converting proces. cannot be under 132
+
+                application hls {
+                        live on;
+                        meta copy;
+                        hls on;
+                        hls_path /tmp/hls;
+                        hls_fragment 6s;
+                }
+    	     }
+	}
+
