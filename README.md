@@ -55,15 +55,15 @@ alle content die gestream zal worden moet in een video bestand zijn. dit kan mp4
 Verder moet er om ervoor te zorgen dat de stream continu gaat door streamen een playlist aangemaakt worden in de vorm van 2 text bestanden.
 
 1) maak 2 txt bestanden 'root.txt' en nested.txt aan:<br>
-	root.txt:<br>
-	file 'nested.txt'<br>
+root.txt:<br>
+file 'nested.txt'<br>
   <br>
-	nested.txt:<br>
+nested.txt:<br>
   
-  ffconcat version 1.0<br>
-	file 'bestand1.mp4'<br>
-	file 'bestand2.mp4'<br>
-	file 'nested.txt'
+ffconcat version 1.0<br>
+file 'bestand1.mp4'<br>
+file 'bestand2.mp4'<br>
+file 'nested.txt'
 
 
 Dit is onze playlist. de root.txt bestand is onze entry point. hier worden de echte playlists toegevoegd in de vorm van txt bestanden.
