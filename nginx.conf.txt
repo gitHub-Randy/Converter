@@ -1,3 +1,4 @@
+	#on linux the file extension needs to be .conf not .conf.txt
 	#user  nobody;
 	worker_processes  1;
 
