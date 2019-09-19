@@ -108,7 +108,7 @@ optionele parameters:<br>
 	is de server adress waar de content heen gestuurd moet worden. stream key kan willekeurig zijn maar moet wel onthouden worden zodat er bekend is hoe de video stream ontvangen kan worden.<br>
 
 # Client:
-	De client bestaat uit een html pagina met de libary hls.js als video player(node.js nodig:https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/).<br>
+	De client bestaat uit een html pagina met de libary hls.js als video player(node.js nodig:https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/).
 	Deze wordt html pagian wordt op de nginx server geplaatst om vanuit daar gehost te worden. de locatie waar deze geplaatst moet worden is:
 	/usr/local/nginx/html
 
