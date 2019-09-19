@@ -1,7 +1,7 @@
 
 # Hoe zet ik een Live stream server en client op<br>
 versie 2.0<br>
-Auteur: Rnady Anft<br>
+Auteur: Randy Anft<br>
 
 Doel van deze handleiding is het om een server en een client daarvoor op te zetten waardoor het mogelijk is om een Video stream te maken die nooit eindigt en waar de content dynamisch aangepast kan worden.
 
