@@ -112,52 +112,10 @@ optionele parameters:<br>
 	Deze wordt html pagian wordt op de nginx server geplaatst om vanuit daar gehost te worden. de locatie waar deze geplaatst moet worden is:
 	/usr/local/nginx/html
 
-	De html pagina ziet moet de volgende inhoudt hebben(is ook op github te vinden: https://github.com/gitHub-Randy/Converter/blob/master/player.html):
+	Hier een voorbeeld hoe de html eruit kan zien:
+	https://github.com/gitHub-Randy/Converter/blob/master/player.html
 
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-    		<meta charset="UTF-8">
-    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-   		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-    		<title>Axi-Cast</title>
-	</head>
-	<body>
-    		<h2>Stream</h2>
-    		<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    		<script src="node_modules/hls.js/src/controller/buffer-controller.js"></script>
-		<!-- Or if you want a more recent canary version -->
-		<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
-		<video id="video" muted="true" controls="true"></video>
-		<script>
-     			var config = {
-        			debug: true,
-  			};
-			var video = document.getElementById('video');
-  			if(Hls.isSupported()) {
-    				var hls = new Hls(config);
-    				hls.loadSource('http://127.0.0.1/hls/test.m3u8');
-    				hls.attachMedia(video);
-    				hls.on(Hls.Events.MANIFEST_PARSED,function() {
-      				video.play();
-				});
- 			}
- 			// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
- 			// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
- 			// This is using the built-in support of the plain video element, without using hls.js.
- 			// Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
- 			// white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
- 			else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    				video.src = 'http://127.0.0.1/hls/test.m3u8';
-   			
-    				video.addEventListener('loadedmetadata',function() {
-      					video.play();
-    				});
-  			}
-		</script>
-	</body>
-
-</html>
+	
 
 
 Deze pagina kan dan op de client machine opgeroepen worden m.b.v. de URL: http://server-ip/player.html
