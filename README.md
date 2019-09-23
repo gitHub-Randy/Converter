@@ -44,9 +44,9 @@ Er wordt ervan uitgegaan dat er een virtual machine met linux(ubuntu 18.x) geins
 
 # FFMPEG
 1) Installeer FFMPEG( Deze moet misntens versie 4.X hebben)<br>
-	`sudo add-apt-repository ppa:jonathonf/ffmpeg-4` <br>
-	`sudo apt-get update` <br>
-	`sudo apt-get install ffmpeg` <br> 
+`sudo add-apt-repository ppa:jonathonf/ffmpeg-4`<br>
+`sudo apt-get update`<br>
+`sudo apt-get install ffmpeg`<br> 
 
 
 ## Hoe Content Streamen:
@@ -60,11 +60,10 @@ Maak 2 txt bestanden 'root.txt' en nested.txt aan:<br>
  <br>
 ### nested.txt:<br>
   
-`ffconcat version 1.0 
-file 'bestand1.mp4' 
-file 'bestand2.mp4' 
-file 'nested.txt' ` 
-
+    ffconcat version 1.0  
+    file 'bestand1.mp4'
+    file 'bestand2.mp4' 
+    file 'nested.txt'
 
 
 
@@ -72,11 +71,11 @@ file 'nested.txt' `
 Deze stap is optioneel omdat het niet altijd nodig is om een bestand te converten. Deze stap dient ervoor om te zorgen dat de 		bestand in het juiste format(codec, timebase) gezet wordt:
 <br>
 `sudo ffmpeg -i inputVideo.mp4 -c:v libx264 -video_track_timescale 90000 outputVideo.mp4`
-	
-`-i`: is de input file
-`-c:v libx264`: is de codec die het video in h264 encoded(moet bij elk bestand gelijk zijn)
-`-video_track_timescale`: zorgt ervoor dat de timeabse aangepast wordt(deze moet bij elk bestand gelijk zijn)
-`outputVideo.mp4`: is de output bestand 
+<br>	
+`-i`: is de input file <br>
+`-c:v libx264`: is de codec die het video in h264 encoded(moet bij elk bestand gelijk zijn)<br>
+`-video_track_timescale`: zorgt ervoor dat de timeabse aangepast wordt(deze moet bij elk bestand gelijk zijn)<br>
+`outputVideo.mp4`: is de output bestand <br>
 
 optionele parameters:<br>
 `-s WxH`: hiermee kan de groote van het video ingesteld worden. voorbeeld: -s 1280x720<br>
@@ -88,21 +87,36 @@ Dit is het eigenlijke streamen. de playlist wordt ingelezen, geloopt nog een kee
 <br>
  ```sudo ffmpeg -fflags +genpts -f concat -safe 0 -stream_loop -1 -i ./root.txt  -preset ultrafast -vcodec libx264 -s 600x900 -b:v 3000k -b:a 0  -f flv rtmp://127.0.0.1:1935/hls/test```
 <br>
+<br>
 `-fflags`: zet formaat flags aan<br>
+<br>
 `+genpts`: zorgt ervoor dat PTS(https://en.wikipedia.org/wiki/Presentation_timestamp) gegenereerd worden als DTS(Decoding Time Stamp) aanwezig zijn.<br>
+<br>
 `-f`: format of functie<br>
+<br>
 `concat`: zorgt ervoor dat de files in de playlist samen ingelezen worden alsof het een file is<br>
+<br>
 `-safe 0`: zorgt ervoor dat elke file path geaccepteerd wordt.<br>
+<br>
 `-stream_loop -1`: zorgt ervoor dat de input oneindig vaak geloopt wordt<br>
+<br>
 `-i`: input(playlist in dit geval)<br>
+<br>
 `-preset`: bepaald hoesnel iets gedaan moet worden. in dit geval is het ultrafast(snelste) hoe sneller het ingesteld is des te minder kwaliteit kan de stream hebben.<br>
+<br>
 `-vcodec`: welke codec moet gebruikt worden. in dit geval libx264<br>
+<br>
 `-s`: stelt de groote van de content in<br>
+<br>
 `-b:v`: bitrate van de video stream. Hoe hoger des te meer data dus betere kwaliteit<br>
+<br>
 `-b:a`: bitrate van de audio stream<br>
+<br>
 `-f flv`: exporteer het als flv bestand<br>
+<br>
 `rtmp://server-ip-adress:port/applicatie/stream_key`:<br>
 is de server adress waar de content heen gestuurd moet worden. stream key kan willekeurig zijn maar moet wel onthouden worden zodat er bekend is hoe de video stream ontvangen kan worden.<br>
+<br>
 
 # Client:
 De client bestaat uit een html pagina met de libary hls.js als video player(node.js nodig:https://tecadmin.net/install-latest-nodejs-npm-on-ubuntu/).
