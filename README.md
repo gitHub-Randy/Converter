@@ -1,5 +1,6 @@
 
-# Hoe zet ik een Live stream server en client op<br>
+#Handleiding en html+ngingx conf om een video stream te maken
+## Hoe zet ik een Live stream server en client op<br>
 versie 2.0<br>
 Auteur: Randy Anft<br>
 
